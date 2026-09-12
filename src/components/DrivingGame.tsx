@@ -207,6 +207,7 @@ export default function DrivingGame() {
     const finish = (won: boolean) => {
       const s = state.current;
       s.running = false;
+      drivingMusic.stop();
       if (won) s.score += 1000;
       setScore(s.score);
       const line = won ? pick(WIN_LINES) : pick(LOSE_LINES);
@@ -543,6 +544,7 @@ export default function DrivingGame() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
+      drivingMusic.stop();
     };
   }, [say]);
 
