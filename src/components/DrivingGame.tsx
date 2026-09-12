@@ -226,7 +226,7 @@ export default function DrivingGame() {
         rot: 0,
         rotv: (Math.random() - 0.5) * 14,
         size,
-        life: 1.1,
+        life: 0.85,
       });
       setShake(1);
       say(pick(CRASH_LINES), `${SPRITE_LABEL[type]}! ${pick(INSTRUCTOR_CRASH)}`);
@@ -311,7 +311,7 @@ export default function DrivingGame() {
         f.y += f.vy * dt;
         f.vy += 900 * dt;
         f.rot += f.rotv * dt;
-        f.size *= 1 + dt * 2.2;
+        f.size = Math.min(220, f.size * (1 + dt * 0.9));
       }
       s.fly = s.fly.filter((f) => f.life > 0);
       setShake((v) => Math.max(0, v - dt * 3));
