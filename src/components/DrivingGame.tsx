@@ -19,6 +19,7 @@ import {
   WIN_LINES,
   pick,
 } from "@/game/lines";
+import { drivingMusic } from "@/game/music";
 
 const SEG_LEN = 200;
 const ROAD_W = 2200;
@@ -93,6 +94,7 @@ export default function DrivingGame() {
   const [instLine, setInstLine] = useState("Start the engine... slowly!");
   const [shake, setShake] = useState(0);
   const [result, setResult] = useState<{ won: boolean; text: string } | null>(null);
+  const [muted, setMuted] = useState(false);
 
   const input = useRef({ left: false, right: false, gas: false, brake: false });
   const state = useRef({
@@ -131,6 +133,7 @@ export default function DrivingGame() {
     setProgress(0);
     setResult(null);
     setPhase("playing");
+    drivingMusic.start();
     say("Okay... breathe, Vera. Breathe.", "Mirror, signal... GO!");
   }, [say]);
 
