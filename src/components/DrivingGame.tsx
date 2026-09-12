@@ -589,10 +589,24 @@ export default function DrivingGame() {
         <div className="rounded-md bg-foreground/70 px-2 py-1 backdrop-blur">Victims {victims}</div>
       </div>
       <div className="pointer-events-none absolute right-3 top-3 z-20 text-right">
-        <div className="rounded-md bg-foreground/70 px-2 py-1 text-xs font-bold uppercase text-primary-foreground backdrop-blur md:text-sm">
-          {Math.ceil(timeLeft)}s
+        <div className="flex items-start justify-end gap-2">
+          <button
+            onClick={() => {
+              setMuted((m) => {
+                drivingMusic.setMuted(!m);
+                return !m;
+              });
+            }}
+            aria-label={muted ? "Unmute music" : "Mute music"}
+            className="pointer-events-auto rounded-md bg-foreground/70 px-2 py-1 text-xs text-primary-foreground backdrop-blur md:text-sm"
+          >
+            {muted ? "🔇" : "🎵"}
+          </button>
+          <div className="rounded-md bg-foreground/70 px-2 py-1 text-xs font-bold uppercase text-primary-foreground backdrop-blur md:text-sm">
+            {Math.ceil(timeLeft)}s
+          </div>
         </div>
-        <div className="mt-1 h-2 w-24 overflow-hidden rounded-full bg-foreground/60">
+        <div className="mt-1 ml-auto h-2 w-24 overflow-hidden rounded-full bg-foreground/60">
           <div className="h-full bg-chart-4" style={{ width: `${progress * 100}%` }} />
         </div>
       </div>
