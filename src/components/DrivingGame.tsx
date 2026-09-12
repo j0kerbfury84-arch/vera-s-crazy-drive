@@ -19,6 +19,7 @@ import {
   WIN_LINES,
   pick,
 } from "@/game/lines";
+import { drivingMusic } from "@/game/music";
 
 const SEG_LEN = 200;
 const ROAD_W = 2200;
@@ -93,6 +94,7 @@ export default function DrivingGame() {
   const [instLine, setInstLine] = useState("Start the engine... slowly!");
   const [shake, setShake] = useState(0);
   const [result, setResult] = useState<{ won: boolean; text: string } | null>(null);
+  const [muted, setMuted] = useState(false);
 
   const input = useRef({ left: false, right: false, gas: false, brake: false });
   const state = useRef({
@@ -131,6 +133,7 @@ export default function DrivingGame() {
     setProgress(0);
     setResult(null);
     setPhase("playing");
+    drivingMusic.start();
     say("Okay... breathe, Vera. Breathe.", "Mirror, signal... GO!");
   }, [say]);
 
@@ -204,6 +207,7 @@ export default function DrivingGame() {
     const finish = (won: boolean) => {
       const s = state.current;
       s.running = false;
+      drivingMusic.stop();
       if (won) s.score += 1000;
       setScore(s.score);
       const line = won ? pick(WIN_LINES) : pick(LOSE_LINES);
@@ -540,6 +544,7 @@ export default function DrivingGame() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
+      drivingMusic.stop();
     };
   }, [say]);
 
@@ -584,10 +589,24 @@ export default function DrivingGame() {
         <div className="rounded-md bg-foreground/70 px-2 py-1 backdrop-blur">Victims {victims}</div>
       </div>
       <div className="pointer-events-none absolute right-3 top-3 z-20 text-right">
-        <div className="rounded-md bg-foreground/70 px-2 py-1 text-xs font-bold uppercase text-primary-foreground backdrop-blur md:text-sm">
-          {Math.ceil(timeLeft)}s
+        <div className="flex items-start justify-end gap-2">
+          <button
+            onClick={() => {
+              setMuted((m) => {
+                drivingMusic.setMuted(!m);
+                return !m;
+              });
+            }}
+            aria-label={muted ? "Unmute music" : "Mute music"}
+            className="pointer-events-auto rounded-md bg-foreground/70 px-2 py-1 text-xs text-primary-foreground backdrop-blur md:text-sm"
+          >
+            {muted ? "🔇" : "🎵"}
+          </button>
+          <div className="rounded-md bg-foreground/70 px-2 py-1 text-xs font-bold uppercase text-primary-foreground backdrop-blur md:text-sm">
+            {Math.ceil(timeLeft)}s
+          </div>
         </div>
-        <div className="mt-1 h-2 w-24 overflow-hidden rounded-full bg-foreground/60">
+        <div className="mt-1 ml-auto h-2 w-24 overflow-hidden rounded-full bg-foreground/60">
           <div className="h-full bg-chart-4" style={{ width: `${progress * 100}%` }} />
         </div>
       </div>
