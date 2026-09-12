@@ -417,7 +417,7 @@ export default function DrivingGame() {
           poly(b.sx, b.sw * 0.02, b.sy, t.sx, t.sw * 0.02, t.sy);
         }
         if (b.seg.checkpoint) {
-          ctx.fillStyle = "rgba(245,215,110,0.75)";
+          ctx.fillStyle = "rgba(245,215,110,0.35)";
           poly(b.sx, b.sw, b.sy, t.sx, t.sw, t.sy);
         }
       }
@@ -426,7 +426,7 @@ export default function DrivingGame() {
       for (let i = drawn.length - 1; i >= 0; i--) {
         const d = drawn[i]!;
         const unit = d.sw / 1; // half road width in px
-        const bh = unit * 2.6;
+        const bh = unit * 1.8;
         if (bh > 3) {
           const seed = (d.seg.index * 9301 + 49297) % 233280;
           const rnd = seed / 233280;
@@ -435,13 +435,13 @@ export default function DrivingGame() {
           const hL = bh * (0.6 + rnd * 0.8);
           const hR = bh * (0.6 + (1 - rnd) * 0.8);
           ctx.fillStyle = colorL;
-          ctx.fillRect(d.sx - d.sw * 1.25 - unit * 1.4, d.sy - hL, unit * 1.4, hL);
+          ctx.fillRect(d.sx - d.sw * 1.25 - unit * 0.9, d.sy - hL, unit * 0.9, hL);
           ctx.fillStyle = colorR;
-          ctx.fillRect(d.sx + d.sw * 1.25, d.sy - hR, unit * 1.4, hR);
+          ctx.fillRect(d.sx + d.sw * 1.25, d.sy - hR, unit * 0.9, hR);
         }
         for (const sp of d.seg.sprites) {
           if (sp.hit) continue;
-          const h = d.sw * 0.55;
+          const h = d.sw * 0.26;
           drawSprite(ctx, sp.type, d.sx + sp.offset * d.sw, d.sy, h);
         }
         if (d.seg.checkpoint && d.sw > 4) {
